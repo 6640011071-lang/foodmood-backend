@@ -2,6 +2,8 @@
 from flask import Flask, request, jsonify
 from deepface import DeepFace
 from PIL import Image
+import pillow_heif                       # ← เพิ่มบรรทัดนี้
+pillow_heif.register_heif_opener()      # ← และบรรทัดนี้ เพื่อให้ Pillow เปิด HEIC/HEIF ได้
 import numpy as np
 import base64
 from io import BytesIO

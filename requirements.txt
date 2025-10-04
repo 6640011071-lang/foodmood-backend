@@ -13,3 +13,5 @@ pandas==1.5.3
 deepface==0.0.93
 retina-face==0.0.14
 mtcnn==0.1.0
+pillow-heif==0.16.0
+
