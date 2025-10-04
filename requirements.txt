@@ -4,17 +4,11 @@ gunicorn==22.0.0
 
 numpy==1.24.3
 pillow==10.2.0
-opencv-python-headless==4.8.1.78
+opencv-python-headless==4.9.0.80
 
 tensorflow==2.12.1
-keras==2.12.0
-
-# face detectors ที่เข้ากับ TF/Keras 2.12 (กันปัญหา tf-keras)
-retina-face==0.0.12
-mtcnn==0.1.1
-
-# ★ เพิ่ม deps ที่ deepface ต้องใช้ (เพราะเรา --no-deps)
 pandas==1.5.3
-tqdm==4.66.4
-gdown==4.7.1
-requests==2.31.0
+deepface==0.0.93
+retinaface==0.0.14
+mtcnn==0.1.0
+tf-keras==2.16.0
