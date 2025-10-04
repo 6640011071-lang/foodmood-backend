@@ -11,5 +11,5 @@ opencv-python-headless==4.9.0.80
 tensorflow==2.12.1
 pandas==1.5.3
 deepface==0.0.93
-retinaface==0.0.14
+retina-face==0.0.14
 mtcnn==0.1.0
