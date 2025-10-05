@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV PIP_NO_CACHE_DIR=1 \
     PIP_DEFAULT_TIMEOUT=180 \
     TF_CPP_MIN_LOG_LEVEL=2 \
+    OMP_NUM_THREADS=1 \
     DETECTOR_BACKEND=opencv \
     MIN_FACE_CONF=0.8 \
     MIN_TOP_PROB=0.6 \
@@ -33,7 +34,21 @@ COPY . .
 # ---------- Create cache folder ----------
 RUN mkdir -p /app/.deepface/weights
 
+# ---------- PREWARM (download model weights at build time) ----------
+# ทำให้ DeepFace โหลดโมเดลอารมณ์ไว้ก่อน เพื่อตัดเวลาหน่วงตอนรันจริง
+RUN python - <<'PY'
+from deepface import DeepFace
+import numpy as np, os
+dummy = np.zeros((224,224,3), dtype='uint8')
+DeepFace.analyze(
+    img_path=dummy,
+    actions=['emotion'],
+    enforce_detection=False,
+    detector_backend=os.getenv('DETECTOR_BACKEND','opencv')
+)
+print(">>> DeepFace emotion model prewarmed & cached")
+PY
+
 # ---------- Gunicorn startup ----------
-# เพิ่ม timeout = 300 เพื่อรอ DeepFace โหลดโมเดลตอนแรก
-# Render จะส่งตัวแปร PORT มาอัตโนมัติ
+# timeout ยาวหน่อย เผื่อช่วงแรก TF ใช้เวลา
 CMD ["bash", "-lc", "gunicorn -w 1 -t 300 -b 0.0.0.0:${PORT:-8080} app:app"]
